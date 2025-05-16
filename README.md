@@ -37,7 +37,7 @@ uvicorn aifellowshipkfapi.main:app --reload
 
     URL: http://localhost:8000/estimate
 
-   ### Request Body:
+ ### Request Body:
 ```bash
 
 {
@@ -61,7 +61,7 @@ uvicorn aifellowshipkfapi.main:app --reload
 ```
 
 
-   ### Response:
+### Response:
 ```bash
 
 {
@@ -84,7 +84,8 @@ uvicorn aifellowshipkfapi.main:app --reload
 ax, ay, az, roll, pitch, yaw, x, y, theta, vx, vy, omega
 ```
 
-    Response:
+### Response:
+
 ```bash
 [
   {"x": 1.0, "y": 2.0, "theta": 0.1},
