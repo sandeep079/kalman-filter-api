@@ -1,6 +1,6 @@
 
 
-# 🚀 Kalman Filter API for Sensor Fusion (ABU Robocon 2025)
+# Kalman Filter API for Sensor Fusion (ABU Robocon 2025)
 
 This project implements a FastAPI-based web service that performs sensor fusion using a Kalman Filter. It fuses **IMU** and **Odometry** data to estimate the robot’s pose (`x`, `y`, `theta`).
 
@@ -8,34 +8,41 @@ Designed as a backend for robotics applications such as **ABU Robocon 2025**, it
 
 ---
 
-## 📦 Features
+##  Features
 
-- 🔁 Sensor Fusion using Kalman Filter
-- 📤 Supports JSON-based POST requests
-- 📂 Supports CSV batch upload and returns list of fused pose estimates
-- 📊 Built-in API docs via Swagger UI
-- 🐳 Docker support for easy deployment
+-  Sensor Fusion using Kalman Filter
+-  Supports JSON-based POST requests
+-  Supports CSV batch upload and returns list of fused pose estimates
+-  Built-in API docs via Swagger UI
+-  Docker support for easy deployment
 
 ---
 
-## 🔧 Installation (Local)
+##  Installation (Local)
 
 ```bash
 git clone https://github.com/sandeep079/kalman-filter-api.git
+```bash
 cd kalman-filter-api
+```bash
 python3 -m venv env
+```bash
 source env/bin/activate
+```bash
 pip install -r requirements.txt
+```bash
 uvicorn aifellowshipkfapi.main:app --reload
 
-🧪 Usage
+```
+
+# Usage
 1. JSON API: /estimate
 
     Method: POST
 
     URL: http://localhost:8000/estimate
 
-    Request Body:
+   ## Request Body:
 
 {
   "imu": {
@@ -56,7 +63,7 @@ uvicorn aifellowshipkfapi.main:app --reload
   }
 }
 
-    Response:
+   ## Response:
 
 {
   "x": 1.05,
@@ -83,7 +90,7 @@ ax, ay, az, roll, pitch, yaw, x, y, theta, vx, vy, omega
   {"x": 1.1, "y": 2.2, "theta": 0.12}
 ]
 
-🐳 Docker Support
+ # Docker Support
 
 Build and run using Docker:
 
@@ -91,7 +98,7 @@ docker build -t kalman-filter-api .
 docker run -d -p 8000:8000 kalman-filter-api
 
 Then open: http://localhost:8000/docs
-📁 Project Structure
+ # Project Structure
 
 kalman-filter-api/
 │
@@ -106,11 +113,11 @@ kalman-filter-api/
 ├── Dockerfile
 └── README.md
 
-👨‍💻 Author
+ # Author
 
 Sandeep Yadav
 Electrical Engineering @ Pulchowk Campus
 GitHub: sandeep079
-📃 License
+ # License
 
 MIT License - use freely for research and education purposes.
