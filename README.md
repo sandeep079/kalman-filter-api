@@ -30,14 +30,14 @@ uvicorn aifellowshipkfapi.main:app --reload
 
 ```
 
-# Usage
+## Usage
 1. JSON API: /estimate
 
     Method: POST
 
     URL: http://localhost:8000/estimate
 
-   ## Request Body:
+   ### Request Body:
 
 {
   "imu": {
@@ -58,7 +58,7 @@ uvicorn aifellowshipkfapi.main:app --reload
   }
 }
 
-   ## Response:
+   ### Response:
 
 {
   "x": 1.05,
@@ -85,7 +85,7 @@ ax, ay, az, roll, pitch, yaw, x, y, theta, vx, vy, omega
   {"x": 1.1, "y": 2.2, "theta": 0.12}
 ]
 
- # Docker Support
+ ## Docker Support
 
 Build and run using Docker:
 
@@ -93,7 +93,7 @@ docker build -t kalman-filter-api .
 docker run -d -p 8000:8000 kalman-filter-api
 
 Then open: http://localhost:8000/docs
- # Project Structure
+ ## Project Structure
 
 kalman-filter-api/
 │
@@ -108,11 +108,11 @@ kalman-filter-api/
 ├── Dockerfile
 └── README.md
 
- # Author
+ ## Author
 
 Sandeep Yadav
 Electrical Engineering @ Pulchowk Campus
 GitHub: sandeep079
- # License
+ ## License
 
 MIT License - use freely for research and education purposes.
