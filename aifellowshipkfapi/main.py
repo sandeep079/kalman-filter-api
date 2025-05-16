@@ -1,11 +1,17 @@
-from fastapi import FastAPI
-from pydantic import BaseModel
-from kalman import kalman_filter
-from fastapi import UploadFile, File
+from fastapi import FastAPI, UploadFile, File
 from fastapi.responses import JSONResponse
+from pydantic import BaseModel
+from typing import List
 import pandas as pd
 import io
 
+from aifellowshipkfapi.kalman import kalman_filter
+from models.schemas import SensorInput, FusedPose  
+
+class FilteredResult(BaseModel):
+    x: float
+    y: float
+    theta: float
 
 app = FastAPI(
     title="Sensor Fusion API for ABU Robocon 2025",
@@ -13,46 +19,20 @@ app = FastAPI(
     version="1.0"
 )
 
-# ----- Request Models -----
+@app.post("/estimate", response_model=FusedPose)
+def estimate_pose(sensor_data: SensorInput):
+    fused_pose = kalman_filter(sensor_data)
+    return fused_pose
 
-class IMUData(BaseModel):
-    ax: float
-    ay: float
-    az: float
-    roll: float
-    pitch: float
-    yaw: float
-
-class OdomData(BaseModel):
-    x: float
-    y: float
-    theta: float
-    vx: float
-    vy: float
-    omega: float
-
-class SensorInput(BaseModel):
-    imu: IMUData
-    odom: OdomData
-
-# ----- Response Model -----
-
-class FusedPose(BaseModel):
-    x: float
-    y: float
-    theta: float
-
-@app.post("/estimate_batch_csv")
+@app.post("/estimate_batch_csv", response_model=List[FilteredResult])
 async def estimate_from_csv(file: UploadFile = File(...)):
     try:
         content = await file.read()
         df = pd.read_csv(io.BytesIO(content))
 
         required_cols = {
-            'ax', 'ay', 'az',
-            'roll', 'pitch', 'yaw',
-            'x', 'y', 'theta',
-            'vx', 'vy', 'omega'
+            'ax', 'ay', 'az', 'roll', 'pitch', 'yaw',
+            'x', 'y', 'theta', 'vx', 'vy', 'omega'
         }
 
         if not required_cols.issubset(df.columns):
@@ -61,16 +41,9 @@ async def estimate_from_csv(file: UploadFile = File(...)):
             })
 
         results = []
-
         for _, row in df.iterrows():
-            imu_data = IMUData(
-                ax=row['ax'], ay=row['ay'], az=row['az'],
-                roll=row['roll'], pitch=row['pitch'], yaw=row['yaw']
-            )
-            odom_data = OdomData(
-                x=row['x'], y=row['y'], theta=row['theta'],
-                vx=row['vx'], vy=row['vy'], omega=row['omega']
-            )
+            imu_data = sensor_data.imu.__class__(**row.to_dict())
+            odom_data = sensor_data.odom.__class__(**row.to_dict())
             sensor_input = SensorInput(imu=imu_data, odom=odom_data)
             fused = kalman_filter(sensor_input)
 
@@ -80,27 +53,10 @@ async def estimate_from_csv(file: UploadFile = File(...)):
                 "theta": fused.theta
             })
 
-        return {"filtered_results": results}
-
+        return results
     except Exception as e:
         return JSONResponse(status_code=500, content={"error": str(e)})
 
-# ----- API Endpoint -----
-
-@app.post("/estimate", response_model=FusedPose)
-def estimate_pose(sensor_data: SensorInput):
-    fused_pose = kalman_filter(sensor_data)
-    return fused_pose
-
-
-# ----- Health Check -----
-
 @app.get("/")
 def root():
-    return {"message": "Sensor Fusion API is up and running "}
-
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
-
+    return {"message": "Sensor Fusion API is up and running 🚀"}

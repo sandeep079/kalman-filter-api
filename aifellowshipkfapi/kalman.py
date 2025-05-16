@@ -1,6 +1,5 @@
 import numpy as np
-from models import SensorInput, FusedPose
-
+from models.schemas import SensorInput, FusedPose
 # ----- Kalman Filter Logic -----
 def kalman_filter(sensor_data: SensorInput) -> FusedPose:
     # Extract IMU data

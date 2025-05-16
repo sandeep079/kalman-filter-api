@@ -1,9 +1,11 @@
+fastapi
+uvicorn[standard]
+pandas
+python-multipart
 loguru
 mkdocs
-pip
 pytest
 python-dotenv
 ruff
 tqdm
 typer
--e .
