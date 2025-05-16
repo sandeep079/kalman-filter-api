@@ -22,15 +22,10 @@ Designed as a backend for robotics applications such as **ABU Robocon 2025**, it
 
 ```bash
 git clone https://github.com/sandeep079/kalman-filter-api.git
-```bash
 cd kalman-filter-api
-```bash
 python3 -m venv env
-```bash
 source env/bin/activate
-```bash
 pip install -r requirements.txt
-```bash
 uvicorn aifellowshipkfapi.main:app --reload
 
 ```
