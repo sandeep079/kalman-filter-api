@@ -1,61 +1,116 @@
-# aifellowshipkfapi
 
-<a target="_blank" href="https://cookiecutter-data-science.drivendata.org/">
-    <img src="https://img.shields.io/badge/CCDS-Project%20template-328F97?logo=cookiecutter" />
-</a>
 
-this is assaignment given by fusemachine faculty
+# 🚀 Kalman Filter API for Sensor Fusion (ABU Robocon 2025)
 
-## Project Organization
+This project implements a FastAPI-based web service that performs sensor fusion using a Kalman Filter. It fuses **IMU** and **Odometry** data to estimate the robot’s pose (`x`, `y`, `theta`).
 
-```
-├── LICENSE            <- Open-source license if one is chosen
-├── Makefile           <- Makefile with convenience commands like `make data` or `make train`
-├── README.md          <- The top-level README for developers using this project.
-├── data
-│   ├── external       <- Data from third party sources.
-│   ├── interim        <- Intermediate data that has been transformed.
-│   ├── processed      <- The final, canonical data sets for modeling.
-│   └── raw            <- The original, immutable data dump.
-│
-├── docs               <- A default mkdocs project; see www.mkdocs.org for details
-│
-├── models             <- Trained and serialized models, model predictions, or model summaries
-│
-├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-│                         the creator's initials, and a short `-` delimited description, e.g.
-│                         `1.0-jqp-initial-data-exploration`.
-│
-├── pyproject.toml     <- Project configuration file with package metadata for 
-│                         aifellowshipkfapi and configuration for tools like black
-│
-├── references         <- Data dictionaries, manuals, and all other explanatory materials.
-│
-├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-│   └── figures        <- Generated graphics and figures to be used in reporting
-│
-├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
-│                         generated with `pip freeze > requirements.txt`
-│
-├── setup.cfg          <- Configuration file for flake8
-│
-└── aifellowshipkfapi   <- Source code for use in this project.
-    │
-    ├── __init__.py             <- Makes aifellowshipkfapi a Python module
-    │
-    ├── config.py               <- Store useful variables and configuration
-    │
-    ├── dataset.py              <- Scripts to download or generate data
-    │
-    ├── features.py             <- Code to create features for modeling
-    │
-    ├── modeling                
-    │   ├── __init__.py 
-    │   ├── predict.py          <- Code to run model inference with trained models          
-    │   └── train.py            <- Code to train models
-    │
-    └── plots.py                <- Code to create visualizations
-```
+Designed as a backend for robotics applications such as **ABU Robocon 2025**, it supports both JSON input and batch CSV file uploads.
 
---------
+---
 
+## 📦 Features
+
+- 🔁 Sensor Fusion using Kalman Filter
+- 📤 Supports JSON-based POST requests
+- 📂 Supports CSV batch upload and returns list of fused pose estimates
+- 📊 Built-in API docs via Swagger UI
+- 🐳 Docker support for easy deployment
+
+---
+
+## 🔧 Installation (Local)
+
+```bash
+git clone https://github.com/sandeep079/kalman-filter-api.git
+cd kalman-filter-api
+python3 -m venv env
+source env/bin/activate
+pip install -r requirements.txt
+uvicorn aifellowshipkfapi.main:app --reload
+
+🧪 Usage
+1. JSON API: /estimate
+
+    Method: POST
+
+    URL: http://localhost:8000/estimate
+
+    Request Body:
+
+{
+  "imu": {
+    "ax": 0.01,
+    "ay": 0.02,
+    "az": 9.81,
+    "roll": 0.01,
+    "pitch": 0.01,
+    "yaw": 0.05
+  },
+  "odom": {
+    "x": 1.0,
+    "y": 2.0,
+    "theta": 0.1,
+    "vx": 0.2,
+    "vy": 0.3,
+    "omega": 0.05
+  }
+}
+
+    Response:
+
+{
+  "x": 1.05,
+  "y": 2.03,
+  "theta": 0.11
+}
+
+2. Batch CSV API: /estimate_batch_csv
+
+    Method: POST
+
+    URL: http://localhost:8000/estimate_batch_csv
+
+    Form Data: Upload .csv file with required columns.
+
+    CSV Column Headers:
+
+ax, ay, az, roll, pitch, yaw, x, y, theta, vx, vy, omega
+
+    Response:
+
+[
+  {"x": 1.0, "y": 2.0, "theta": 0.1},
+  {"x": 1.1, "y": 2.2, "theta": 0.12}
+]
+
+🐳 Docker Support
+
+Build and run using Docker:
+
+docker build -t kalman-filter-api .
+docker run -d -p 8000:8000 kalman-filter-api
+
+Then open: http://localhost:8000/docs
+📁 Project Structure
+
+kalman-filter-api/
+│
+├── aifellowshipkfapi/
+│   ├── main.py                # FastAPI app
+│   ├── kalman.py              # Kalman filter logic
+│   └── modeling/              # CSV test logic
+│
+├── models/
+│   └── schemas.py             # Pydantic models
+├── requirements.txt
+├── Dockerfile
+└── README.md
+
+👨‍💻 Author
+
+Sandeep Yadav
+Electrical Engineering @ Pulchowk Campus
+GitHub: sandeep079
+📃 License
+
+MIT License - use freely for research and education purposes.
