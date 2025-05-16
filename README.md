@@ -119,11 +119,6 @@ kalman-filter-api/
 └── README.md
 ```
 
- ## Author
-
-Sandeep Yadav
-Electrical Engineering @ Pulchowk Campus
-GitHub: sandeep079
  ## License
 
 MIT License - use freely for research and education purposes.
