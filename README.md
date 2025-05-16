@@ -38,6 +38,7 @@ uvicorn aifellowshipkfapi.main:app --reload
     URL: http://localhost:8000/estimate
 
    ### Request Body:
+```bash
 
 {
   "imu": {
@@ -57,14 +58,18 @@ uvicorn aifellowshipkfapi.main:app --reload
     "omega": 0.05
   }
 }
+```
+
 
    ### Response:
+```bash
 
 {
   "x": 1.05,
   "y": 2.03,
   "theta": 0.11
 }
+```
 
 2. Batch CSV API: /estimate_batch_csv
 
@@ -75,25 +80,30 @@ uvicorn aifellowshipkfapi.main:app --reload
     Form Data: Upload .csv file with required columns.
 
     CSV Column Headers:
-
+```bash
 ax, ay, az, roll, pitch, yaw, x, y, theta, vx, vy, omega
+```
 
     Response:
-
+```bash
 [
   {"x": 1.0, "y": 2.0, "theta": 0.1},
   {"x": 1.1, "y": 2.2, "theta": 0.12}
 ]
+```
 
  ## Docker Support
 
 Build and run using Docker:
+```bash
 
 docker build -t kalman-filter-api .
 docker run -d -p 8000:8000 kalman-filter-api
+```
 
 Then open: http://localhost:8000/docs
  ## Project Structure
+```bash
 
 kalman-filter-api/
 │
@@ -107,6 +117,7 @@ kalman-filter-api/
 ├── requirements.txt
 ├── Dockerfile
 └── README.md
+```
 
  ## Author
 
